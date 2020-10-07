@@ -31,11 +31,11 @@ export default {
     data: function() {
         return {
             loginForm: {
-                username: 'zhd',
+                username: '2010060001',
                 password: '123456',
             },
             rules: {
-                username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+                username: [{ required: true, message: '请输入员工号', trigger: 'blur' }],
                 password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
             },
         };
@@ -43,9 +43,9 @@ export default {
     methods: {
         submitForm() {
             this.$axios
-                .post('/', {
-                    username: this.loginForm.username,
-                    password: this.loginForm.password
+                .post('/emmUser/login', {
+                    emmId: this.loginForm.username,
+                    emmPassword: this.loginForm.password
                 })
                 .then(successResponse => {
                     if (successResponse.data.code === 20000) {
@@ -53,7 +53,7 @@ export default {
                         // 页面跳转：可带参数
                         this.$router.push({path: '/dashboard'})
                     } else if (successResponse.data.code === 20002) {
-                        alert('账号或密码错误，请检查密码或账号是否有误')
+                        alert(successResponse.data.message)
                     }
                 })
                 .catch(failResponse => {
