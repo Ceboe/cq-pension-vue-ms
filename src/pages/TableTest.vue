@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 员工信息
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -31,10 +31,17 @@
                     @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
+                <el-table-column prop="empId" label="员工编号"align="center"></el-table-column>
+                <el-table-column prop="empName" label="姓名"></el-table-column>
+                <el-table-column prop="empSex" label="性别"></el-table-column>
+                <el-table-column prop="empPhone" label="电话"></el-table-column>
+                <el-table-column label="操作" width="280" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="info" icon="el-icon-message" @click="findAllMessage(scope.row)">详情</el-button>
+                        <el-button type="primary" icon="el-icon-edit" @click="updateOne(scope.$index)">编辑</el-button>
+                        <el-button type="danger" icon="el-icon-delete" @click="deleteOne(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
 
             </el-table>
             <div class="pagination">
@@ -73,17 +80,20 @@
         name: 'TableTest',
         data() {
             return {
-                query: {
+                query: {//分页
                     address: '',
                     name: '',
                     pageIndex: 1,
-                    pageSize: 10
+                    pageSize: 10//儿子
                 },
-                tableData: [{
-
+                tableData: [{//表格结构
+                    empId:'',
+                    empName:'',
+                    empSex:'',
+                    empPhone:'',
                 }],
                 multipleSelection: [],
-                delList: [],
+                delList: [],//批量删除的id数组
                 editVisible: false,
                 pageTotal: 0,
                 form: {},
@@ -97,19 +107,26 @@
         methods: {
             // 获取 easy-mock 的模拟数据
             getData() {
-                this.$axios
-                    .get('/bed/findAll')
+                //员工个人信息
+                this.$axios.get('/employee/findAll')
                     .then(successResponse => {
-                        if (successResponse.data.code === 20000) {
-                            // 登录成功
-                            // 页面跳转：可带参数
-                            this.tableData = successResponse.data.data;
-                        } else if (successResponse.data.code === 20002) {
-                            alert('账号或密码错误，请检查密码或账号是否有误')
-                        }
+                        var empData = successResponse.data.data
+                        this.tableData = empData;
+                    })
+                    .catch(failResponse => { this.$message.error(failResponse)})
+            },
+            findAllMessage(row){
+
+            },
+            //获取员工就职信息
+            getEmmData(row){
+                this.$axios
+                    .get('/employeeManage/findAll')
+                    .then(successResponse => {
+                        return successResponse.data.data;
                     })
                     .catch(failResponse => {
-                        alert('登录提交失败，详情：' + failResponse)
+                        return failResponse;
                     })
             },
             // 触发搜索按钮
@@ -118,7 +135,7 @@
                 this.getData();
             },
             // 删除操作
-            handleDelete(index, row) {
+            deleteOne(index, row) {
                 // 二次确认删除
                 this.$confirm('确定要删除吗？', '提示', {
                     type: 'warning'
@@ -127,7 +144,9 @@
                         this.$message.success('删除成功');
                         this.tableData.splice(index, 1);
                     })
-                    .catch(() => {});
+                    .catch(() => {
+                        this.$message.error('删除失败');
+                    });
             },
             // 多选操作
             handleSelectionChange(val) {
@@ -144,9 +163,8 @@
                 this.multipleSelection = [];
             },
             // 编辑操作
-            handleEdit(index, row) {
+            updateOne(index){
                 this.idx = index;
-                this.form = row;
                 this.editVisible = true;
             },
             // 保存编辑

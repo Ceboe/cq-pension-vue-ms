@@ -20,36 +20,29 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/icon',
-                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
-                    meta: { title: '自定义图标' }
+                    path: '/chargeBill',
+                    component: () => import(/* webpackChunkName: "icon" */ '../pages/yl/ChargeBill.vue'),
+                    meta: { title: '收费记录' }
                 },
                 {
-                    path: '/table',
-                    component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
-                    meta: { title: '基础表格' }
+                    path: '/kitchen',
+                    component: () => import(/* webpackChunkName: "icon" */ '../pages/eat/Kitchen.vue'),
+                    meta: { title: '菜品制作记录' }
                 },
                 {
-                    path: '/tabs',
-                    component: () => import(/* webpackChunkName: "tabs" */ '../components/page/Tabs.vue'),
-                    meta: { title: 'tab选项卡' }
+                    path: '/EatPrice',
+                    component: () => import(/* webpackChunkName: "icon" */ '../pages/eat/EatPrice.vue'),
+                    meta: { title: '套餐列表' }
                 },
                 {
-                    path: '/form',
-                    component: () => import(/* webpackChunkName: "form" */ '../components/page/BaseForm.vue'),
-                    meta: { title: '基本表单' }
+                    path: '/bed',
+                    component: () => import(/* webpackChunkName: "icon" */ '../pages/Bed.vue'),
+                    meta: { title: '床位' }
                 },
                 {
-                    // 富文本编辑器组件
-                    path: '/editor',
-                    component: () => import(/* webpackChunkName: "editor" */ '../components/page/VueEditor.vue'),
-                    meta: { title: '富文本编辑器' }
-                },
-                {
-                    // markdown组件
-                    path: '/markdown',
-                    component: () => import(/* webpackChunkName: "markdown" */ '../components/page/Markdown.vue'),
-                    meta: { title: 'markdown编辑器' }
+                    path: '/floor',
+                    component: () => import(/* webpackChunkName: "icon" */ '../pages/Floor.vue'),
+                    meta: { title: '楼层' }
                 },
                 {
                     // 图片上传组件
@@ -76,12 +69,6 @@ export default new Router({
                     meta: { title: '拖拽弹框' }
                 },
                 {
-                    // 国际化组件
-                    path: '/i18n',
-                    component: () => import(/* webpackChunkName: "i18n" */ '../components/page/I18n.vue'),
-                    meta: { title: '国际化' }
-                },
-                {
                     // 权限页面
                     path: '/permission',
                     component: () => import(/* webpackChunkName: "permission" */ '../components/page/Permission.vue'),
@@ -104,6 +91,7 @@ export default new Router({
                 }
             ]
         },
+
         {
             path: '/login',
             component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
