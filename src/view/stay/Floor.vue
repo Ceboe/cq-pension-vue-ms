@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 楼层信息
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -25,15 +25,13 @@
                     class="table"
                     ref="multipleTable"
                     header-cell-class-name="table-header"
-                    @selection-change="handleSelectionChange"
-            >
+                    @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="bedId" label="床位" width="55" align="center"></el-table-column>
-                <el-table-column prop="roomId" label="房间号"></el-table-column>
-                <el-table-column label="租金">
-                    <template slot-scope="scope">￥{{scope.row.bedPrice}}/月</template>
-                </el-table-column>
-                <el-table-column prop="bedOccupy" label="使用状态"></el-table-column>
+                <el-table-column prop="flId" label="flId" width="55" align="center"></el-table-column>
+                <el-table-column prop="bid" label="bId"></el-table-column>
+                <el-table-column prop="rnum" label="rNum"></el-table-column>
+                <el-table-column prop="flName" label="flName"></el-table-column>
+                <el-table-column prop="flCharge" label="flcharge"></el-table-column>
 
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -70,24 +68,25 @@
                     width="50%"
                     :before-close="handleClose">
                 <el-form ref="form" :model="dept" label-width="80px">
-                    <el-form-item label="床位编号">
-                        <el-input v-model="dept.bedId"></el-input>
+                    <el-form-item label="床位号">
+                        <el-input v-model="dept.bid"></el-input>
                     </el-form-item>
                     <el-form-item label="房间号">
-                        <el-input v-model="dept.roomId"></el-input>
+                        <el-input v-model="dept.rnum"></el-input>
                     </el-form-item>
-                    <el-form-item label="租金">
-                        <el-input v-model="dept.bedPrice"></el-input>
+                    <el-form-item label="楼层名">
+                        <el-input v-model="dept.flName"></el-input>
                     </el-form-item>
-                    <el-form-item label="使用情况">
-                        <el-input v-model="dept.bedOccupy"></el-input>
+                    <el-form-item label="flcharge">
+                        <el-input v-model="dept.flCharge"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button size="medium" @click="cancel()">取 消</el-button>
+                        <el-button type="primary" @click="cancel()">取 消</el-button>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
+
             <el-dialog
                     title="添加"
                     :append-to-body='true'
@@ -95,20 +94,23 @@
                     width="50%"
                     :before-close="handleClose">
                 <el-form ref="form" :model="depts" label-width="80px">
-                    <el-form-item label="床位编号">
-                        <el-input v-model="depts.bedId"></el-input>
+                    <el-form-item label="楼层ID">
+                        <el-input v-model="depts.flId"></el-input>
+                    </el-form-item>
+                    <el-form-item label="床位号">
+                        <el-input v-model="dept.bid"></el-input>
                     </el-form-item>
                     <el-form-item label="房间号">
-                        <el-input v-model="depts.roomId"></el-input>
+                        <el-input v-model="dept.rnum"></el-input>
                     </el-form-item>
-                    <el-form-item label="租金">
-                        <el-input v-model="depts.bedPrice"></el-input>
+                    <el-form-item label="楼层名">
+                        <el-input v-model="dept.flName"></el-input>
                     </el-form-item>
-                    <el-form-item label="使用情况">
-                        <el-input v-model="depts.bedOccupy"></el-input>
+                    <el-form-item label="flcharge">
+                        <el-input v-model="dept.flCharge"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button size="medium" @click="cancel()">取 消</el-button>
+                        <el-button type="primary" @click="cancel()">取 消</el-button>
                         <el-button type="primary" @click="addsumit">添 加</el-button>
                     </el-form-item>
                 </el-form>
@@ -119,28 +121,31 @@
 
 <script>
     export default {
-        name: 'Bed',
         data() {
             return {
 
                 tableData: [],
                 searchContent:'',
                 editVisible: false,
+                addVisible:false,
                 dept:{
-                    bedId:'',
-                    roomId:'',
-                    bedPrice:'',
-                    bedOccupy:''
+                    bid:'',
+                    rnum:'',
+                    flName:'',
+                    flCharge:'',
+
                 },
                 depts:{
-                    bedId:'',
-                    roomId:'',
-                    bedPrice:'',
-                    bedOccupy:''
+                    flId:'',
+                    bid:'',
+                    rnum:'',
+                    flName:'',
+                    flCharge:'',
+
                 },
+
                 total:0,
                 dialogVisible:false,
-                addVisible:false,
                 size:10,//分页每页10条数据
                 page:1,//从第一页开始
 
@@ -159,16 +164,43 @@
                 this.size=sizeChange
                 this.initAllDept()
             },
+
+            handleEdit(index, row) {
+                this.dialogVisible = true;
+                this.dept = Object.assign({}, row);
+            },
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {});
+            },
+            cancel() {
+                this.dialogVisible = false;
+                this.addVisible = false;
+                this.emptyUserData();
+            },
+            emptyUserData(){
+                this.dept = {
+                    bid:'',
+                    rnum:'',
+                    flName:'',
+                    flCharge:'',
+                }
+            },
+
             addsumit(){
                 console.log(this.depts)
-                this.$axios.post('/bed/add',this.depts)
+                this.$axios.post('/floor/add',this.depts)
                     .then(successResponse => {
                         if(successResponse.data.code===20000){
-                            this.addVisible = false;
                             this.$message({
                                 type: 'success',
                                 message: '添加成功!'
                             });
+                            this.getData()
+                            this.addVisible = false;
                         }
                         else{
                             this.$message.error("添加失败！")
@@ -176,36 +208,16 @@
                     })
                     .catch(failResponse => { this.$message.error("添加失败！详情："+failResponse)})
             },
-            handleEdit(index, row) {
-                this.dialogVisible = true;
-                this.dept = Object.assign({}, row); //这句是关键！！！
-            },
-            handleClose(done) {
-                done()
-            },
-            cancel() {
-                this.dialogVisible = false;
-                this.emptyUserData();
-            },
-            emptyUserData(){
-                this.dept = {
-                    roomId: '',
-                    bedPrice:'',
-                    bedOccupy: ''
-                }
-            },
+
             onSubmit(){
                 //修改
-                //调用put请求
-                this.$axios.put('/bed/'+this.dept.bedId,this.dept
+                this.$axios.put('/floor/'+this.dept.flId,this.dept
                 ).then(response =>
                 {
                     this.$message({
                         type: 'success',
                         message: response.data.message
-
                     });
-                    this.getData()
                 }).catch(error =>
                 {
                     this.$message({
@@ -214,7 +226,7 @@
                     });
                     console.log(error);
                 });
-                //this.getData()
+                this.getData()
                 this.tableData.reverse()
                 this.dialogVisible = false;
 
@@ -223,8 +235,9 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 this.$axios
-                    .get('/bed/findAll')
+                    .get('/floor')
                     .then(response => {
+                        console.log(response);
                         this.tableData = response.data.data;
                         this.$forceUpdate()
                     })
@@ -232,7 +245,7 @@
             // 触发搜索按钮
             handleSearch() {
                 if (/^\d+$/.test(this.searchContent.trim())) {
-                    this.$axios.get('/bed/' + this.searchContent.trim())
+                    this.$axios.get('/floor/' + this.searchContent.trim())
                         .then((response) => {
                             console.log(response.data.data);
                             //请求返回的内容是单个，但是表需要数组，所以单个对象转化为数组
@@ -254,7 +267,7 @@
             },
             // 删除操作
             deleteClick(row) {
-                this.$axios.delete('/bed/' + row.bedId)
+                this.$axios.delete('/floor/' + row.flId)
                     .then((response) => {
                         console.log(response);
                         this.$forceUpdate();
@@ -287,6 +300,7 @@
                 let str = '';
                 this.delList = this.delList.concat(this.multipleSelection);
                 for (let i = 0; i < length; i++) {
+
                     str += this.multipleSelection[i].bedId + ' ';
                 }
                 this.$message.error(`删除了${str}`);

@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 楼层信息
+                    <i class="el-icon-lx-cascades"></i> 病史表
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -28,11 +28,16 @@
                     @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="flId" label="楼层编号" width="55" align="center"></el-table-column>
-                <el-table-column prop="bid" label="所属楼房编号" align="center"></el-table-column>
-                <el-table-column prop="rnum" label="房间数量"></el-table-column>
-                <el-table-column prop="flName" label="楼层名称"></el-table-column>
-                <el-table-column prop="flCharge" label="楼层负责人"></el-table-column>
+                <el-table-column prop="illId" label="疾病ID" width="55" align="center"></el-table-column>
+                <el-table-column prop="opId" label="老人ID"></el-table-column>
+                <el-table-column prop="illDis" label="疾病"></el-table-column>
+                <el-table-column type="date" prop="illTime" label="生病时间"></el-table-column>
+                <el-table-column prop="medMech" label="就诊机构"></el-table-column>
+                <el-table-column prop="recoTime" label="痊愈时间"></el-table-column>
+                <el-table-column prop="illAttention" label="注意事项"></el-table-column>
+                <el-table-column prop="illRec" label="记录人"></el-table-column>
+
+
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -64,24 +69,34 @@
             <el-dialog
                     title="编辑"
                     :append-to-body='true'
-                    :visible.sync="editVisible"
+                    :visible.sync="dialogVisible"
                     width="50%"
                     :before-close="handleClose">
                 <el-form ref="form" :model="dept" label-width="80px">
-                    <el-form-item label="所属楼房编号">
-                        <el-input v-model="dept.bid"></el-input>
+                    <el-form-item label="老人ID">
+                        <el-input v-model="dept.opId"></el-input>
                     </el-form-item>
-                    <el-form-item label="房间数量">
-                        <el-input v-model="dept.rnum"></el-input>
+                    <el-form-item label="疾病">
+                        <el-input v-model="dept.illDis"></el-input>
                     </el-form-item>
-                    <el-form-item label="楼层名">
-                        <el-input v-model="dept.flName"></el-input>
+                    <el-form-item label="病发时间">
+                        <el-input v-model="dept.illTime"></el-input>
                     </el-form-item>
-                    <el-form-item label="楼层负责人">
-                        <el-input v-model="dept.flCharge"></el-input>
+                    <el-form-item label="就诊机构">
+                        <el-input v-model="dept.medMech"></el-input>
                     </el-form-item>
+                    <el-form-item label="痊愈时间">
+                        <el-input v-model="dept.recoTime"></el-input>
+                    </el-form-item>
+                    <el-form-item label="注意事项">
+                        <el-input v-model="dept.illAttention"></el-input>
+                    </el-form-item>
+                    <el-form-item label="记录人">
+                        <el-input v-model="dept.illRec"></el-input>
+                    </el-form-item>
+
                     <el-form-item>
-                        <el-button type="primary" @click="cancel()">取 消</el-button>
+                        <el-button size="medium" @click="cancel()">取 消</el-button>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -94,23 +109,33 @@
                     width="50%"
                     :before-close="handleClose">
                 <el-form ref="form" :model="depts" label-width="80px">
-                    <el-form-item label="楼层ID">
-                        <el-input v-model="depts.flId"></el-input>
+                    <el-form-item label="疾病记录ID">
+                        <el-input v-model="depts.illId"></el-input>
                     </el-form-item>
-                    <el-form-item label="楼房编号">
-                        <el-input v-model="depts.bid"></el-input>
+                    <el-form-item label="老人ID">
+                        <el-input v-model="depts.opId"></el-input>
                     </el-form-item>
-                    <el-form-item label="房间数量">
-                        <el-input v-model="depts.rnum"></el-input>
+                    <el-form-item label="疾病">
+                        <el-input v-model="depts.illDis"></el-input>
                     </el-form-item>
-                    <el-form-item label="楼层名">
-                        <el-input v-model="depts.flName"></el-input>
+                    <el-form-item label="病发时间">
+                        <el-input v-model="depts.illTime"></el-input>
                     </el-form-item>
-                    <el-form-item label="楼层负责人">
-                        <el-input v-model="depts.flCharge"></el-input>
+                    <el-form-item label="就诊机构">
+                        <el-input v-model="depts.medMech"></el-input>
                     </el-form-item>
+                    <el-form-item label="痊愈时间">
+                        <el-input v-model="depts.recoTime"></el-input>
+                    </el-form-item>
+                    <el-form-item label="注意事项">
+                        <el-input v-model="depts.illAttention"></el-input>
+                    </el-form-item>
+                    <el-form-item label="记录人">
+                        <el-input v-model="depts.illRec"></el-input>
+                    </el-form-item>
+
                     <el-form-item>
-                        <el-button type="primary" @click="cancel()">取 消</el-button>
+                        <el-button size="medium" @click="cancel()">取 消</el-button>
                         <el-button type="primary" @click="addsumit">添 加</el-button>
                     </el-form-item>
                 </el-form>
@@ -127,26 +152,31 @@
                 tableData: [],
                 searchContent:'',
                 editVisible: false,
-                addVisible:false,
-                dept:{
-                    flId:'',
-                    bid:'',
-                    rnum:'',
-                    flName:'',
-                    flCharge:'',
-
-                },
+                dialogAdd:false,
+                dept:[{
+                    opId:'',
+                    illDis:'',
+                    illTime:'',
+                    medMech:'',
+                    recoTime:'',
+                    illAttention:'',
+                    illRec:''
+                }],
                 depts:{
-                    flId:'',
-                    bId:'',
-                    rNum:'',
-                    flName:'',
-                    flCharge:'',
+                    illId:'',
+                    opId:'',
+                    illDis:'',
+                    illTime:'',
+                    medMech:'',
+                    recoTime:'',
+                    illAttention:'',
+                    illRec:''
 
                 },
 
                 total:0,
                 dialogVisible:false,
+                addVisible:false,
                 size:10,//分页每页10条数据
                 page:1,//从第一页开始
 
@@ -166,9 +196,21 @@
                 this.initAllDept()
             },
 
+            // 获取表数据
+            getData() {
+                this.$axios
+                    .get('/illRecord')
+                    .then(response => {
+                        console.log(response);
+                        this.tableData = response.data.data;
+                        this.$forceUpdate()
+                    })
+            },
+
+
             handleEdit(index, row) {
-                this.editVisible = true;
-                this.dept = Object.assign({}, row);
+                this.dialogVisible = true;
+                this.dept = Object.assign({}, row); //这句是关键！！！
             },
             handleClose(done) {
                 this.$confirm('确认关闭？')
@@ -179,21 +221,50 @@
             },
             cancel() {
                 this.dialogVisible = false;
-                this.addVisible = false;
+               this.addVisible = false;
+
                 this.emptyUserData();
             },
             emptyUserData(){
                 this.dept = {
-                    bId:'',
-                    rNum:'',
-                    flName:'',
-                    flCharge:'',
+                    oopId:'',
+                    illDis:'',
+                    illTime:'',
+                    medMech:'',
+                    recoTime:'',
+                    illAttention:'',
+                    illRec:''
                 }
+            },
+            onSubmit(){
+                //修改
+
+                this.$axios.put('/illRecord/'+this.dept.illId,this.dept
+                ).then(response =>
+                {
+                    this.$message({
+                        type: 'success',
+                        message: response.data.message
+
+                    });
+                    this.getData()
+                }).catch(error =>
+                {
+                    this.$message({
+                        type: 'success',
+                        message: '更新失败!'
+                    });
+                    console.log(error);
+                });
+                //this.getData()
+                this.tableData.reverse()
+                this.dialogVisible = false;
+
             },
 
             addsumit(){
                 console.log(this.depts)
-                this.$axios.post('/floor/add',this.depts)
+                this.$axios.post('/illRecord/add',this.depts)
                     .then(successResponse => {
                         if(successResponse.data.code===20000){
                             this.$message({
@@ -210,43 +281,12 @@
                     .catch(failResponse => { this.$message.error("添加失败！详情："+failResponse)})
             },
 
-            onSubmit(){
-                //修改
-                //调用put请求
-                const requestData = {
 
-                    flId:this.dept.fld,
-                    bId:this.dept.bId,
-                    rNum:this.dept.rNum,
-                    flName:this.dept.flName,
-                    flCharge:this.dept.flCharge
-
-                };
-                this.$axios.put('/floor/'+requestData.flId,requestData
-                ).then(response =>
-                {
-                    this.$message({
-                        type: 'success',
-                        message: response.data.message
-                    });
-                }).catch(error =>
-                {
-                    this.$message({
-                        type: 'success',
-                        message: '更新失败!'
-                    });
-                    console.log(error);
-                });
-                this.getData()
-                this.tableData.reverse()
-                this.dialogVisible = false;
-
-            },
 
             // 获取 easy-mock 的模拟数据
             getData() {
                 this.$axios
-                    .get('/floor')
+                    .get('/illRecord')
                     .then(response => {
                         console.log(response);
                         this.tableData = response.data.data;
@@ -256,7 +296,7 @@
             // 触发搜索按钮
             handleSearch() {
                 if (/^\d+$/.test(this.searchContent.trim())) {
-                    this.$axios.get('/floor/' + this.searchContent.trim())
+                    this.$axios.get('/illRecord/' + this.searchContent.trim())
                         .then((response) => {
                             console.log(response.data.data);
                             //请求返回的内容是单个，但是表需要数组，所以单个对象转化为数组
@@ -278,7 +318,7 @@
             },
             // 删除操作
             deleteClick(row) {
-                this.$axios.delete('/floor/' + row.flId)
+                this.$axios.delete('/illRecord/' + row.illId)
                     .then((response) => {
                         console.log(response);
                         this.$forceUpdate();

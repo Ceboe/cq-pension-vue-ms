@@ -12,68 +12,95 @@ export default new Router({
         {
             path: '/',
             component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
-            meta: { title: '自述文件' },
+            meta: { title: 'home' },
             children: [
                 {
                     path: '/dashboard',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../view/Dashboard.vue'),
                     meta: { title: '系统首页' }
                 },
+                //系统管理
                 {
-                    path: '/chargeBill',
-                    component: () => import(/* webpackChunkName: "icon" */ '../pages/yl/ChargeBill.vue'),
-                    meta: { title: '收费记录' }
+                    path: '/dataStat',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/sys/DataStat.vue'),
+                    meta: { title: '数据统计' }
                 },
                 {
+                    path: '/authority',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/sys/Authority.vue'),
+                    meta: { title: '权限管理' }
+                },
+                {
+                    path: '/log',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/sys/Log.vue'),
+                    meta: { title: '日志管理' }
+                },
+                //收费管理
+                {
+                    path: '/chargeBill',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/yl/ChargeBill.vue'),
+                    meta: { title: '收费记录' }
+                },
+                //餐饮管理
+                {
                     path: '/kitchen',
-                    component: () => import(/* webpackChunkName: "icon" */ '../pages/eat/Kitchen.vue'),
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/eat/Kitchen.vue'),
                     meta: { title: '菜品制作记录' }
                 },
                 {
                     path: '/EatPrice',
-                    component: () => import(/* webpackChunkName: "icon" */ '../pages/eat/EatPrice.vue'),
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/eat/EatPrice.vue'),
                     meta: { title: '套餐列表' }
                 },
+                //住宿管理
                 {
                     path: '/bed',
-                    component: () => import(/* webpackChunkName: "icon" */ '../pages/Bed.vue'),
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/stay/Bed.vue'),
                     meta: { title: '床位' }
                 },
                 {
                     path: '/floor',
-                    component: () => import(/* webpackChunkName: "icon" */ '../pages/Floor.vue'),
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/stay/Floor.vue'),
                     meta: { title: '楼层' }
                 },
                 {
-                    // 图片上传组件
-                    path: '/upload',
-                    component: () => import(/* webpackChunkName: "upload" */ '../components/page/Upload.vue'),
-                    meta: { title: '文件上传' }
+                    path: '/build',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/stay/Build.vue'),
+                    meta: { title: '楼房' }
                 },
                 {
-                    // vue-schart组件
-                    path: '/charts',
-                    component: () => import(/* webpackChunkName: "chart" */ '../components/page/BaseCharts.vue'),
-                    meta: { title: 'schart图表' }
+                    path: '/room',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/stay/Room.vue'),
+                    meta: { title: '房间' }
+                },
+                //健康管理
+                {
+                    path: '/healAss',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/ill/HealAss.vue'),
+                    meta: { title: '体检报告' }
                 },
                 {
-                    // 拖拽列表组件
-                    path: '/drag',
-                    component: () => import(/* webpackChunkName: "drag" */ '../components/page/DragList.vue'),
-                    meta: { title: '拖拽列表' }
+                    path: '/illHistory',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/ill/IllHistory.vue'),
+                    meta: { title: '病史记录' }
                 },
                 {
-                    // 拖拽Dialog组件
-                    path: '/dialog',
-                    component: () => import(/* webpackChunkName: "dragdialog" */ '../components/page/DragDialog.vue'),
-                    meta: { title: '拖拽弹框' }
+                    path: '/illRecord',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/ill/IllRecord.vue'),
+                    meta: { title: '生病记录' }
                 },
                 {
-                    // 权限页面
-                    path: '/permission',
-                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Permission.vue'),
-                    meta: { title: '权限测试', permission: true }
+                    path: '/phyExam',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/ill/PhyExam.vue'),
+                    meta: { title: '健康评估' }
                 },
+                //老人管理
+                {
+                    path: '/opeople',
+                    component: () => import(/* webpackChunkName: "icon" */ '../view/opeople/Opeople.vue'),
+                    meta: { title: '老人' }
+                },
+                //错误
                 {
                     path: '/404',
                     component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
@@ -83,11 +110,6 @@ export default new Router({
                     path: '/403',
                     component: () => import(/* webpackChunkName: "403" */ '../components/page/403.vue'),
                     meta: { title: '403' }
-                },
-                {
-                    path: '/donate',
-                    component: () => import(/* webpackChunkName: "donate" */ '../components/page/Donate.vue'),
-                    meta: { title: '支持作者' }
                 }
             ]
         },
